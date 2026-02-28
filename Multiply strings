@@ -1,0 +1,36 @@
+class Solution(object):
+    def multiply(self, num1, num2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+        # Edge case: if either number is 0, the product is 0
+        if num1 == "0" or num2 == "0":
+            return "0"
+        
+        # Initialize the result array with zeros
+        # The product of length m and n will have at most m + n digits
+        res = [0] * (len(num1) + len(num2))
+        
+        # Reverse iterate through both strings
+        for i in range(len(num1) - 1, -1, -1):
+            for j in range(len(num2) - 1, -1, -1):
+                # Convert characters to digits and multiply
+                mul = (ord(num1[i]) - ord('0')) * (ord(num2[j]) - ord('0'))
+                
+                # The indices in res correspond to (i + j) and (i + j + 1)
+                p1, p2 = i + j, i + j + 1
+                
+                # Add product to the current position in the array
+                total = mul + res[p2]
+                
+                res[p2] = total % 10
+                res[p1] += total // 10
+                
+        # Convert digit array to string
+        # Skip leading zero if it exists (the first digit can be 0)
+        result_str = "".join(map(str, res))
+        
+        return result_str.lstrip('0')
+        
